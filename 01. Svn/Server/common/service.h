@@ -1,0 +1,2 @@
+// Define:
+#define ENABLE_EXTEND_ITEM_AWARD
