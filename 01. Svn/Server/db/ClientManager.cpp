@@ -56,8 +56,8 @@ inline const float GetRandomGaussian(float avg, float sigma)
 								bResultAdd = false; 
 						}
 						
-						const BYTE bApplySkillDamageValue = MINMAX(-30, static_cast<int>(GetRandomGaussian(0, 5) + 0.5f), 30);
-						const short sApplyNormalHitValue = abs(bApplySkillDamageValue) <= 20 ? -2 * bApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * bApplySkillDamageValue + number(1, 5);
+						int bApplySkillDamageValue = MINMAX(-30, (int)(GetRandomGaussian(0, 5) + 0.5f), 30);
+						int sApplyNormalHitValue = abs(bApplySkillDamageValue) <= 20 ? -2 * bApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * bApplySkillDamageValue + number(1, 5);
 
 						if (bResultAdd)
 						{
