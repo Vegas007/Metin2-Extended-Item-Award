@@ -37,36 +37,61 @@ inline const float GetRandomGaussian(float avg, float sigma)
 #endif
 
 //1.2 Search for:
-					item.alSockets[2] = dwSocket2;
+						snprintf(szQuery, sizeof(szQuery),
+								"INSERT INTO item%s (id, owner_id, window, pos, vnum, count, socket0, socket1, socket2) "
+								"VALUES(%u, %u, '%s', %d, %u, %u, %u, %u, %u)",
+								GetTablePostfix(),
+								GainItemID(),
+								pi->account_id,
+								pi->ip[0] == 0 ? "SAFEBOX" : "MALL",
+								iPos,
+								pItemAward->dwVnum, pItemAward->dwCount, pItemAward->dwSocket0, pItemAward->dwSocket1, dwSocket2);
 //1.2 Replace with:
+#if defined(ENABLE_EXTEND_ITEM_AWARD)
+						// Random hit/skill damage bonus for empty weapons.
+						if (pItemTable && pItemTable->sAddonType == - 1) // player.item_proto.addon_type = -1 (Eg. 189, 199, 299, 1139, 1179, 2159, 2179, 3169, 3219, 5119, 5129, 6019, 6069, 6079, 7169)[+0 - +9]
+						{
+							bool bResultAdd = true;
+							for (size_t j = 0; j < ITEM_ATTRIBUTE_MAX_NUM; ++j)
+							{
+								const BYTE bType = pItemAward->aAttr[j].bType;
+								const short sValue = pItemAward->aAttr[j].sValue;
+
+								if ((bType == APPLY_SKILL_DAMAGE_BONUS || bType == APPLY_NORMAL_HIT_DAMAGE_BONUS) && sValue) 
+									bResultAdd = false; 
+							}
+
+							const int32_t iApplySkillDamageValue = MINMAX(-30, (int)(GetRandomGaussian(0, 5) + 0.5f), 30);
+							const int32_t iApplyNormalHitValue = abs(iApplySkillDamageValue) <= 20 ? -2 * iApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * iApplySkillDamageValue + number(1, 5);
+
+							if (bResultAdd)
+							{
+								pItemAward->aAttr[0].bType = APPLY_SKILL_DAMAGE_BONUS;
+								pItemAward->aAttr[0].sValue = iApplySkillDamageValue;
+								pItemAward->aAttr[1].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
+								pItemAward->aAttr[1].sValue = iApplyNormalHitValue;	
+							}
+						}
+
+						snprintf(szQuery, sizeof(szQuery),
+								"INSERT INTO item%s (id, owner_id, window, pos, vnum, count, socket0, socket1, socket2, "
+								"attrtype0, attrvalue0, attrtype1, attrvalue1, attrtype2, attrvalue2, attrtype3, attrvalue3, attrtype4, attrvalue4, attrtype5, attrvalue5, attrtype6, attrvalue6) "
+								"VALUES(%u, %u, '%s', %d, %u, %u, %u, %u, %u, %d, %u, %d, %u, %d, %u, %d, %u, %d, %u, %d, %u, %d, %u)",
+						GetTablePostfix(), GainItemID(), pi->account_id, pi->ip[0] == 0 ? "SAFEBOX" : "MALL", iPos, pItemAward->dwVnum, pItemAward->dwCount, pItemAward->dwSocket0, pItemAward->dwSocket1, dwSocket2,
+							pItemAward->aAttr[0].bType, pItemAward->aAttr[0].sValue, pItemAward->aAttr[1].bType, pItemAward->aAttr[1].sValue, pItemAward->aAttr[2].bType, pItemAward->aAttr[2].sValue,
+							pItemAward->aAttr[3].bType, pItemAward->aAttr[3].sValue, pItemAward->aAttr[4].bType, pItemAward->aAttr[4].sValue, pItemAward->aAttr[5].bType, pItemAward->aAttr[5].sValue,
+							pItemAward->aAttr[6].bType, pItemAward->aAttr[6].sValue);
+#else
+						snprintf(szQuery, sizeof(szQuery), "INSERT INTO item%s (id, owner_id, window, pos, vnum, count, socket0, socket1, socket2) VALUES(%u, %u, '%s', %d, %u, %u, %u, %u, %u)"
+						GetTablePostfix(), GainItemID(), pi->account_id, pi->ip[0] == 0 ? "SAFEBOX" : "MALL", iPos, pItemAward->dwVnum, pItemAward->dwCount, pItemAward->dwSocket0, pItemAward->dwSocket1, dwSocket2);
+#endif
+
+//1.3 Search for:
+					item.alSockets[2] = dwSocket2;
+//1.3 Replace with:
 #if defined(ENABLE_EXTEND_ITEM_AWARD)
 					item.alSockets[2] = pItemAward->dwSocket2;
 					thecore_memcpy(&item.aAttr, pItemAward->aAttr, sizeof(item.aAttr));
-
-					// Random hit/skill damage bonus for empty weapons.
-					if (pItemTable && pItemTable->sAddonType == - 1) // player.item_proto.addon_type = -1 (Eg. 189, 199, 299, 1139, 1179, 2159, 2179, 3169, 3219, 5119, 5129, 6019, 6069, 6079, 7169)[+0 - +9]
-					{
-						bool bResultAdd = true;
-						for (size_t j = 0; j < ITEM_ATTRIBUTE_MAX_NUM; ++j)
-						{
-							const BYTE bType = item.aAttr[j].bType;
-							const short sValue = item.aAttr[j].sValue;
-
-							if ((bType == APPLY_SKILL_DAMAGE_BONUS || bType == APPLY_NORMAL_HIT_DAMAGE_BONUS) && sValue) 
-								bResultAdd = false; 
-						}
-						
-						int bApplySkillDamageValue = MINMAX(-30, (int)(GetRandomGaussian(0, 5) + 0.5f), 30);
-						int sApplyNormalHitValue = abs(bApplySkillDamageValue) <= 20 ? -2 * bApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * bApplySkillDamageValue + number(1, 5);
-
-						if (bResultAdd)
-						{
-							item.aAttr[0].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
-							item.aAttr[0].sValue = sApplyNormalHitValue;	
-							item.aAttr[1].bType = APPLY_SKILL_DAMAGE_BONUS;
-							item.aAttr[1].sValue = bApplySkillDamageValue;
-						}
-					}
 #else
 					item.alSockets[2] = dwSocket2;
 #endif
