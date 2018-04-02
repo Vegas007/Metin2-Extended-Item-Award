@@ -61,10 +61,10 @@ inline const float GetRandomGaussian(float avg, float sigma)
 
 						if (bResultAdd)
 						{
-							item.aAttr[0].bType = APPLY_SKILL_DAMAGE_BONUS;
-							item.aAttr[0].sValue = bApplySkillDamageValue;
-							item.aAttr[1].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
-							item.aAttr[1].sValue = sApplyNormalHitValue;	
+							item.aAttr[0].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
+							item.aAttr[0].sValue = sApplyNormalHitValue;	
+							item.aAttr[1].bType = APPLY_SKILL_DAMAGE_BONUS;
+							item.aAttr[1].sValue = bApplySkillDamageValue;
 						}
 					}
 #else
