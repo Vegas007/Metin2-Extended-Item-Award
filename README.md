@@ -1,5 +1,11 @@
 # Metin2 Extended Item Award
 
+**02.04.2018**
+
+- Fixed problem with save bonus after reload <cache> items.
+- Fixed problem with unknown values.
+- Fixed unknown average/skill damage > that's for items which have addon type (-1) and you added them in item shop and don't add them with bonuses like skill damage or hit damage value x, y as default, so they will be without bonuses and get 'bugged', you need to change some bonuses for get hit/skill damage.Now when item will be inserted will check if item doesn't have these bonuses (from query) and add them as random value.
+
 ![screenshot_196](https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png)
 
 - You can store all bonuses and stones for items.
