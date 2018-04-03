@@ -48,28 +48,40 @@ inline const float GetRandomGaussian(float avg, float sigma)
 								pItemAward->dwVnum, pItemAward->dwCount, pItemAward->dwSocket0, pItemAward->dwSocket1, dwSocket2);
 //1.2 Replace with:
 #if defined(ENABLE_EXTEND_ITEM_AWARD)
-						// Random hit/skill damage bonus for empty weapons.
-						if (pItemTable && pItemTable->sAddonType == - 1) // player.item_proto.addon_type = -1 (Eg. 189, 199, 299, 1139, 1179, 2159, 2179, 3169, 3219, 5119, 5129, 6019, 6069, 6079, 7169)[+0 - +9]
+						if (pItemTable) 
 						{
-							bool bResultAdd = true;
-							for (size_t j = 0; j < ITEM_ATTRIBUTE_MAX_NUM; ++j)
+							// Correction for socket real time and more.
+							if (pItemTable->bType == ITEM_UNIQUE || pItemTable->bType == ITEM_USE)
 							{
-								const BYTE bType = pItemAward->aAttr[j].bType;
-								const short sValue = pItemAward->aAttr[j].sValue;
-
-								if ((bType == APPLY_SKILL_DAMAGE_BONUS || bType == APPLY_NORMAL_HIT_DAMAGE_BONUS) && sValue) 
-									bResultAdd = false; 
+								if (pItemTable->alValues[2] == 0)
+									pItemAward->dwSocket2 = pItemTable->alValues[0];
+								else
+									pItemAward->dwSocket2 = CClientManager::instance().GetCurrentTime() + pItemTable->alValues[0];
 							}
-
-							if (bResultAdd)
+							
+							// Random average/skill damage bonus for empty values.
+							if (pItemTable->sAddonType == - 1) // player.item_proto.addon_type = -1 (Eg. 189, 199, 299, 1139, 1179, 2159, 2179, 3169, 3219, 5119, 5129, 6019, 6069, 6079, 7169)[+0 - +9]
 							{
-								int bApplySkillDamageValue = MINMAX(-30, (int)(GetRandomGaussian(0, 5) + 0.5f), 30);
-								int sApplyNormalHitValue = abs(bApplySkillDamageValue) <= 20 ? -2 * bApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * bApplySkillDamageValue + number(1, 5);
-								
-								pItemAward->aAttr[0].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
-								pItemAward->aAttr[0].sValue = sApplyNormalHitValue;	
-								pItemAward->aAttr[1].bType = APPLY_SKILL_DAMAGE_BONUS;
-								pItemAward->aAttr[1].sValue = bApplySkillDamageValue;
+								bool bResultAdd = true;
+								for (size_t j = 0; j < ITEM_ATTRIBUTE_MAX_NUM; ++j)
+								{
+									const BYTE bType = pItemAward->aAttr[j].bType;
+									const short sValue = pItemAward->aAttr[j].sValue;
+
+									if ((bType == APPLY_SKILL_DAMAGE_BONUS || bType == APPLY_NORMAL_HIT_DAMAGE_BONUS) && sValue) 
+										bResultAdd = false; 
+								}
+
+								if (bResultAdd)
+								{
+									int bApplySkillDamageValue = MINMAX(-30, (int)(GetRandomGaussian(0, 5) + 0.5f), 30);
+									int sApplyNormalHitValue = abs(bApplySkillDamageValue) <= 20 ? -2 * bApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * bApplySkillDamageValue + number(1, 5);
+									
+									pItemAward->aAttr[0].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
+									pItemAward->aAttr[0].sValue = sApplyNormalHitValue;	
+									pItemAward->aAttr[1].bType = APPLY_SKILL_DAMAGE_BONUS;
+									pItemAward->aAttr[1].sValue = bApplySkillDamageValue;
+								}
 							}
 						}
 
