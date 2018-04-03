@@ -9,6 +9,9 @@
 
 ![screenshot_196](https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png)
 
+![screenshot_48](https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png)
+![28367df426cae8e7c1d54cd01d9cf6a2](https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif)
+
 - You can store all bonuses and stones for items.
 ###
 
