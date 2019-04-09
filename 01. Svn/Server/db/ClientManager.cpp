@@ -3,12 +3,12 @@ extern int g_iPlayerCacheFlushSeconds;
 //1.1 Add before:
 #if defined(ENABLE_EXTEND_ITEM_AWARD)
 #include <float.h>
-inline const double uniform_random(double a, double b)
+inline const double uniform_random(const double a, const double b)
 {
 	return thecore_random() / (RAND_MAX + 1.f) * (b - a) + a;
 }
 
-inline const float GetRandomGaussian(float avg, float sigma)
+inline const float GetRandomGaussian(const float avg, const float sigma)
 {
 	static bool bHasNextGaussian = false;
 	static float fNextGaussian = 0.0f;
@@ -28,7 +28,7 @@ inline const float GetRandomGaussian(float avg, float sigma)
 			s = v1 * v1 + v2 * v2;
 		} while (s >= 1.f || fabs(s) < FLT_EPSILON);
 
-		double multiplier = sqrtf(-2 * logf(s) / s);
+		const double multiplier = sqrtf(-2 * logf(s) / s);
 		fNextGaussian = v2 * multiplier;
 		bHasNextGaussian = true;
 		return v1 * multiplier * sigma + avg;
@@ -74,8 +74,8 @@ inline const float GetRandomGaussian(float avg, float sigma)
 
 								if (bResultAdd)
 								{
-									int bApplySkillDamageValue = MINMAX(-30, (int)(GetRandomGaussian(0, 5) + 0.5f), 30);
-									int sApplyNormalHitValue = abs(bApplySkillDamageValue) <= 20 ? -2 * bApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * bApplySkillDamageValue + number(1, 5);
+									const int bApplySkillDamageValue = MINMAX(-30, static_cast<int>((GetRandomGaussian(0, 5) + 0.5f)), 30);
+									const int sApplyNormalHitValue = abs(bApplySkillDamageValue) <= 20 ? -2 * bApplySkillDamageValue + abs(number(-8, 8) + number(-8, 8)) + number(1, 4) : -2 * bApplySkillDamageValue + number(1, 5);
 									
 									pItemAward->aAttr[0].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
 									pItemAward->aAttr[0].sValue = sApplyNormalHitValue;	
