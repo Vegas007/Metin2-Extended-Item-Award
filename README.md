@@ -4,8 +4,15 @@
 **02.04.2018**
 - Fixed problem with save bonus after reload <cache> items.
 - Fixed problem with unknown values.
-- Fixed unknown average/skill damage > that's for items which have addon type (-1) and you added them in item shop and don't add them with bonuses like skill damage or hit damage value x, y as default, so they will be without bonuses and get 'bugged', you need to change some bonuses for get hit/skill damage.Now when item will be inserted will check if item doesn't have these bonuses (from query) and add them as random value.
 - Correction for socket real time and more.
+- Fixed unknown average/skill damage bonus value.
+player.item_proto.addon_type = -1 (Eg. 189, 199, 299, 1139, 1179, 2159, 2179, 3169, 3219, 5119, 5129, 6019, 6069, 6079, 7169)[+0 - +9]
+That's for the items which have addon type (-1) and you added them in item shop without bonuses like skill damage or hit damage,
+value x, y as default, so they'll will be without bonuses and get 'bugged'.
+Now when the item will be inserted there'll be a check if item doesn't have those bonuses (from query) add a random average/skill damage bonus value.
+```sql
+INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 189, 1, 1); 
+```
 
 **12.04.2019**
 - Fixed unique items based on the real time.
