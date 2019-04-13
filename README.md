@@ -1,3 +1,4 @@
+
 # Metin2 Extended Item Award
 - You can store all bonuses and stones for items.
 
@@ -16,10 +17,10 @@ INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account
 
 **12.04.2019**
 - Fixed unique items based on the real time.
-- Fixed unstackable items.
+- Fixed unstackable items.
 - Fixed if item count overflow occured, then set it to maximum.
-- Added support for books. (check skill types, unknown skill), skill vnum need to be saved into socket0, (4=Aura of the Sword < player.skill_proto), if the skill vnum is unknown, there will be a random book based on pc races, excluded skills PASSIVE, GUILD, SUPPORT.
-- Added a to-do for ITEM_BLEND, check if apply_type exists in bonuses, check if apply_value/apply_duration is equal with grades (1/2/3/4/5) from settings, blend.txt
+- Added support for books. (check skill types, unknown skill), skill vnum need to be saved into socket0, (4=Aura of the Sword < player.skill_proto), if the skill vnum is unknown, there will be a random book based on pc races, excluded skills PASSIVE, GUILD, SUPPORT.
+- Added a to-do for ITEM_BLEND, check if apply_type exists in bonuses, check if apply_value/apply_duration is equal with grades (1/2/3/4/5) from settings, blend.txt
 - Added auto query.
  
 ```sql
@@ -29,8 +30,8 @@ INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account
 INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUES ('account', 50300, 1, 4, 1);
 ```
 
-![screenshot_196](https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png)![screenshot_48](https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png)![28367df426cae8e7c1d54cd01d9cf6a2](https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif)
-
+![screenshot_196](https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png) ![screenshot_48](https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png)
+![28367df426cae8e7c1d54cd01d9cf6a2](https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif) ![enter image description here](https://i.gyazo.com/5cf81572ee8fb081e9515634a3d65566.gif)
 
 ###
 
