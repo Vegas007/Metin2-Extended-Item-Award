@@ -1,18 +1,30 @@
 # Metin2 Extended Item Award
+- You can store all bonuses and stones for items.
 
 **02.04.2018**
-
 - Fixed problem with save bonus after reload <cache> items.
 - Fixed problem with unknown values.
 - Fixed unknown average/skill damage > that's for items which have addon type (-1) and you added them in item shop and don't add them with bonuses like skill damage or hit damage value x, y as default, so they will be without bonuses and get 'bugged', you need to change some bonuses for get hit/skill damage.Now when item will be inserted will check if item doesn't have these bonuses (from query) and add them as random value.
 - Correction for socket real time and more.
 
-![screenshot_196](https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png)
+**12.04.2019**
+- Fixed unique items based on the real time.
+- Fixed unstackable items.
+- Fixed if item count overflow occured, then set it to maximum.
+- Added support for books. (check skill types, unknown skill), skill vnum need to be saved into socket0, (4=Aura of the Sword < player.skill_proto), if the skill vnum is unknown, there will be a random book based on pc races, excluded skills PASSIVE, GUILD, SUPPORT.
+- Added a to-do for ITEM_BLEND, check if apply_type exists in bonuses, check if apply_value/apply_duration is equal with grades (1/2/3/4/5) from settings, blend.txt
+- Added auto query.
+ 
+```sql
+# Random book
+INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 50300, 1, 1); 
+# Specific book by skill vnum
+INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUES ('account', 50300, 1, 4, 1);
+```
 
-![screenshot_48](https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png)
-![28367df426cae8e7c1d54cd01d9cf6a2](https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif)
+![screenshot_196](https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png)![screenshot_48](https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png)![28367df426cae8e7c1d54cd01d9cf6a2](https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif)
 
-- You can store all bonuses and stones for items.
+
 ###
 
 > Data information
