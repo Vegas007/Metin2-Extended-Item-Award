@@ -42,6 +42,7 @@ INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUE
 
 > MySQL Command Test
 ```sql
+# Sockets & attrs
 INSERT INTO `player`.`item_award`(`login`, `vnum`, `count`, `given_time`, `why`, `socket0`, `socket1`, `socket2`, `attrtype0`, `attrvalue0`, `attrtype1`, `attrvalue1`, `attrtype2`, `attrvalue2`, `attrtype3`, `attrvalue3`, `attrtype4`, `attrvalue4`, `mall`) VALUES (
 	'test',                 -- ACCOUNT_NAME
 	12029,                  -- ITEM_VNUM
