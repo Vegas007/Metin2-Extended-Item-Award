@@ -1,6 +1,3 @@
-
-
-
 # Metin2 Extended Item Award
 >  You can store all bonuses and stones for items.
 
@@ -38,6 +35,8 @@ INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUE
 - Eg. Add +500 *INT* to your shield, now there's a check for min-max value of player.item_attr Lv.1 - Lv.5
 and your **500** *INT*   value will be replaced with max value from lvl5 of bonus, like **12** (**lv5**), that happen with all the bonuses, same thing with the values lower than lvl1, like 5 *HP_REGEN* on your neck, when the minimum (**lv1**) is **10**, the value will be replaced with **10**.
 - If the bonus type can't be added into a specific item, the bonus will be ignored > deleted. (example: critical pct to armor)
+- Refactorized all the code and moved all features into ItemAwardManager.
+- C++11 or higher is required for checking attributes.
 ```sql
 # Test unknown types + higher and lower values.
 INSERT INTO `player`.`item_award`(`login`, `vnum`, `count`, `attrtype0`, `attrvalue0`, `attrtype1`, `attrvalue1`, `attrtype2`, `attrvalue2`, `attrtype3`, `attrvalue3`, `attrtype4`, `attrvalue4`, `mall`) VALUES (
