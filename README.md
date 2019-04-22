@@ -31,7 +31,7 @@ INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account
 INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUES ('account', 50300, 1, 4, 1);
 ```
 ------------
-**2019-04-16 14:54:48 Tuesday**
+**2019-04-16 14:54:48 Tuesday** [(Video - Click)](https://i.gyazo.com/403fd912ef53eb55d0b8ea21fadf484e.mp4)
 - Added a check for attr types and values **min** - **max**.
 - You can't insert wrong bonuses into a specific item.
 - Eg. Add 2000 *MAX_HP* on your **Sword+9**, was possible, now not.
@@ -44,8 +44,8 @@ INSERT INTO `player`.`item_award`(`login`, `vnum`, `count`, `attrtype0`, `attrva
 	'test',
 	149,
 	1,
-	17,	25,   -- ATTBONUS_HUMAN
-	22,	35,   -- ATTBONUS_DEVIL,
+	17, 25,   -- ATTBONUS_HUMAN
+	22, 35,   -- ATTBONUS_DEVIL,
 	32, 175,  -- RESIST_BELL
 	33, -150, -- RESIST_FAN
 	48, 1,    -- IMMUNE_STUN
@@ -59,11 +59,15 @@ SELECT apply, apply+0 FROM `item_attr` WHERE weapon > 0
 	AND apply in ('ATTBONUS_HUMAN', 'ATTBONUS_DEVIL',
 					'RESIST_BELL', 'RESIST_FAN', 'IMMUNE_STUN');
 ```
+------------
+<p align="left"> 
+<img src="https://i.gyazo.com/403fd912ef53eb55d0b8ea21fadf484e.gif">
+</p>
 
 ------------
+<p align="center"><img src="https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png"><img src="https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png"></p>
 
-![screenshot_196](https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png) ![screenshot_48](https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png)
-![28367df426cae8e7c1d54cd01d9cf6a2](https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif) ![enter image description here](https://i.gyazo.com/5cf81572ee8fb081e9515634a3d65566.gif)
+<p align="center"><img src="https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif"><img src="https://i.gyazo.com/5cf81572ee8fb081e9515634a3d65566.gif"></p>
 
 ------------
 
