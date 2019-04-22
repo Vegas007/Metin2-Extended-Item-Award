@@ -1,2 +1,5 @@
 // Define:
 #define ENABLE_EXTEND_ITEM_AWARD
+#ifdef ENABLE_EXTEND_ITEM_AWARD
+	#define USE_ITEM_AWARD_CHECK_ATTRIBUTES // c++11 or higher
+#endif
