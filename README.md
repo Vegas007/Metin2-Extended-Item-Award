@@ -35,10 +35,10 @@ INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUE
 - Eg. Add +500 *INT* to your shield, now there's a check for min-max value of player.item_attr Lv.1 - Lv.5
 and your **500** *INT*   value will be replaced with max value from lvl5 of bonus, like **12** (**lv5**), that happen with all the bonuses, same thing with the values lower than lvl1, like 5 *HP_REGEN* on your neck, when the minimum (**lv1**) is **10**, the value will be replaced with **10**.
 - If the bonus type can't be added into a specific item, the bonus will be ignored > deleted. (example: critical pct to armor)
-- Refactorized all the code and moved all features into ItemAwardManager.
+- Refactorized all the code and moved all features into [ItemAwardManager.cpp](https://github.com/Vegas007/Metin2-Extended-Item-Award/blob/master/01.%20Svn/Server/db/ItemAwardManager.cpp).
 - C++11 or higher is required for checking attributes.
 ```sql
-# Test unknown types + higher and lower values.
+# Test unknown types + higher and lower values in game.
 INSERT INTO `player`.`item_award`(`login`, `vnum`, `count`, `attrtype0`, `attrvalue0`, `attrtype1`, `attrvalue1`, `attrtype2`, `attrvalue2`, `attrtype3`, `attrvalue3`, `attrtype4`, `attrvalue4`, `mall`) VALUES (
 	'test',
 	149,
@@ -51,12 +51,13 @@ INSERT INTO `player`.`item_award`(`login`, `vnum`, `count`, `attrtype0`, `attrva
 	1
 );
 
+# See the min-max values for all the bonuses from weapon.
 SELECT apply+0 AS `index`, apply AS `name`, lv1 as `min_value`, lv5 as `max_value` 
 	FROM `item_attr` WHERE weapon > 0;
-
+	
+# See if a specific bonus is included in bonuses of weapon.
 SELECT apply, apply+0 FROM `item_attr` WHERE weapon > 0
-	AND apply in ('ATTBONUS_HUMAN', 'ATTBONUS_DEVIL',
-					'RESIST_BELL', 'RESIST_FAN', 'IMMUNE_STUN');
+	AND apply in ('ATTBONUS_HUMAN', 'ATTBONUS_DEVIL', 'RESIST_BELL', 'RESIST_FAN', 'IMMUNE_STUN');
 ```
 ------------
 <p align="left"> 
