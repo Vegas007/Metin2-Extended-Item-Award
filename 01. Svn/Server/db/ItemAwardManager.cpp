@@ -152,7 +152,7 @@ void ItemAwardManager::CheckItemAttributes(TItemAward & rkItemAward, const TItem
 		for (size_t i = 0; i < ITEM_ATTRIBUTE_MAX_NUM; ++i)
 		{
 			const uint8_t bApplyType = rkItemAward.aAttr[i].bType;
-			const bool bIsAddonTypeItem = (bApplyType = APPLY_SKILL_DAMAGE_BONUS || bApplyType = APPLY_NORMAL_HIT_DAMAGE_BONUS);
+			const bool bIsAddonTypeItem = (bApplyType == APPLY_SKILL_DAMAGE_BONUS || bApplyType == APPLY_NORMAL_HIT_DAMAGE_BONUS);
 
 			const TItemAttrTable * pkAttrTable = NULL;
 			for (size_t j = 0; j < vec_itemAttrTable.size(); ++j)
@@ -208,8 +208,11 @@ void ItemAwardManager::CheckItemAddonType(TItemAward & rkItemAward, const TItemT
 		const uint8_t bType = rkItemAward.aAttr[i].bType;
 		const int16_t sValue = rkItemAward.aAttr[i].sValue;
 
-		if ((bType == APPLY_SKILL_DAMAGE_BONUS || bType == APPLY_NORMAL_HIT_DAMAGE_BONUS) && sValue) 
+		if ((bType == APPLY_SKILL_DAMAGE_BONUS || bType == APPLY_NORMAL_HIT_DAMAGE_BONUS) && sValue)
+		{
 			bHasBonus = true; 
+			break;
+		}
 	}
 
 	if (!bHasBonus)
