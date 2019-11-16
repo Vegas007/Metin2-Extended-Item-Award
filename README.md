@@ -64,6 +64,10 @@ SELECT apply, apply+0 FROM `item_attr` WHERE weapon > 0
 <img src="https://i.gyazo.com/403fd912ef53eb55d0b8ea21fadf484e.gif">
 </p>
 
+**2019-10-30 03:48:12 Wednesday**
+- Fixed expression is not assignable.
+- Break a for loop after the bonus has found.
+
 ------------
 <p align="center"><img src="https://user-images.githubusercontent.com/17238102/37860642-581cde84-2f32-11e8-9f1e-36cc2eef695d.png"><img src="https://user-images.githubusercontent.com/17238102/38222896-611fc684-36f0-11e8-8535-26bf5fcef867.png"></p>
 
