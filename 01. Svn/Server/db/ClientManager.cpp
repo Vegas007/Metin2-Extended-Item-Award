@@ -8,11 +8,31 @@
 					#endif
 
 //1.2) Search for:
+						DWORD dwSkillIdx;
+						DWORD dwSkillVnum;
+
+						do
+						{
+							dwSkillIdx = number(0, m_vec_skillTable.size()-1);
+							dwSkillVnum = m_vec_skillTable[dwSkillIdx].dwVnum;
+							break;
+						} while (1);
+
 						pItemAward->dwSocket0 = dwSkillVnum;
 //1.2) Replace with:
-						#ifndef ENABLE_EXTEND_ITEM_AWARD
+#ifndef ENABLE_EXTEND_ITEM_AWARD
+						DWORD dwSkillIdx;
+						DWORD dwSkillVnum;
+
+						do
+						{
+							dwSkillIdx = number(0, m_vec_skillTable.size()-1);
+							dwSkillVnum = m_vec_skillTable[dwSkillIdx].dwVnum;
+							break;
+						} while (1);
+
 						pItemAward->dwSocket0 = dwSkillVnum;
-						#endif
+#endif
 
 //1.3) Search for:
 					if (pItemTable->bType == ITEM_UNIQUE)
@@ -96,4 +116,4 @@
 #endif
 
 //1.6) If you use martysama0134 source:
-#define ENABLE_ITEMAWARD_REFRESH﻿ // Should be enabled﻿﻿﻿﻿.
+#define ENABLE_ITEMAWARD_REFRESH // Should be enabled
