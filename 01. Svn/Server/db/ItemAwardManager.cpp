@@ -315,3 +315,9 @@ void ItemAwardManager::CheckItemBlend(TItemAward & rkItemAward, const TItemTable
 		sys_err("ItemAwardManager: Unknown sockets for ITEM_BLEND.");
 }
 #endif
+
+//1.5) Search for:
+		TItemAward * kData = new TItemAward;
+		memset(kData, 0, sizeof(TItemAward));
+//1.5) Replace with:
+		TItemAward * kData = new TItemAward{};
