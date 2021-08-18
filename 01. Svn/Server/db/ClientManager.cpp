@@ -1,11 +1,10 @@
 //1.1) Search for:
 					DWORD dwSocket2 = 0;
-//1.1) Replace with:
-					#ifdef ENABLE_EXTEND_ITEM_AWARD
-					DWORD dwSocket2 = pItemAward->dwSocket2;
-					#else
-					DWORD dwSocket2 = 0;
-					#endif
+//1.1) Add after:
+#ifdef ENABLE_EXTEND_ITEM_AWARD
+					dwSocket2 = pItemAward->dwSocket2;
+#endif
+
 
 //1.2) Search for:
 						DWORD dwSkillIdx;
