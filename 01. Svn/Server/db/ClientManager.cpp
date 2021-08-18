@@ -62,7 +62,7 @@
 						// START_OF_AUTO_QUERY
 						char szColumns[QUERY_MAX_LEN], szValues[QUERY_MAX_LEN];
 						
-						int	iLen = snprintf(szColumns, sizeof(szColumns), "id, owner_id, window, pos, vnum, count");
+						int	iLen = snprintf(szColumns, sizeof(szColumns), "id, owner_id, `window`, pos, vnum, count");
 						int	iValueLen = snprintf(szValues, sizeof(szValues), "%u, %u, '%s', %d, %u, %u", GainItemID(), pi->account_id, (pi->ip[0] == 0) ? "SAFEBOX" : "MALL", iPos, pItemAward->dwVnum, pItemAward->dwCount);
 
 						iLen += snprintf(szColumns + iLen, sizeof(szColumns) - iLen, ", socket0, socket1, socket2");
@@ -78,7 +78,7 @@
 						snprintf(szQuery, sizeof(szQuery), "INSERT INTO item%s (%s) VALUES(%s)", GetTablePostfix(), szColumns, szValues);
 #else
 						snprintf(szQuery, sizeof(szQuery),
-								"INSERT INTO item%s (id, owner_id, window, pos, vnum, count, socket0, socket1, socket2) "
+								"INSERT INTO item%s (id, owner_id, `window`, pos, vnum, count, socket0, socket1, socket2) "
 								"VALUES(%u, %u, '%s', %d, %u, %u, %u, %u, %u)",
 								GetTablePostfix(),
 								GainItemID(),
