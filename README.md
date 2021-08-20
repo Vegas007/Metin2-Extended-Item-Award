@@ -11,7 +11,7 @@ That's for the items which have addon type (-1) and you added them in item shop 
 value x, y as default, so they'll will be without bonuses and get bugged.
 Now when the item will be inserted there'll be a check if item doesn't have those bonuses (from query) add a random average/skill damage bonus value.
 ```sql
-INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 189, 1, 1); 
+INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 189, 1, 1);
 ```
 ------------
 **2019-04-12 02:31:18 Friday**
@@ -23,7 +23,7 @@ INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account
 - Added auto query.
 ```sql
 # Random book
-INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 50300, 1, 1); 
+INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 50300, 1, 1);
 # Specific book by skill vnum
 INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUES ('account', 50300, 1, 4, 1);
 ```
@@ -52,15 +52,15 @@ INSERT INTO `player`.`item_award`(`login`, `vnum`, `count`, `attrtype0`, `attrva
 );
 
 # See the min-max values for all the bonuses from weapon.
-SELECT apply+0 AS `index`, apply AS `name`, lv1 as `min_value`, lv5 as `max_value` 
+SELECT apply+0 AS `index`, apply AS `name`, lv1 as `min_value`, lv5 as `max_value`
 	FROM `item_attr` WHERE weapon > 0;
-	
+
 # See if a specific bonus is included in bonuses of weapon.
 SELECT apply, apply+0 FROM `item_attr` WHERE weapon > 0
 	AND apply in ('ATTBONUS_HUMAN', 'ATTBONUS_DEVIL', 'RESIST_BELL', 'RESIST_FAN', 'IMMUNE_STUN');
 ```
 ------------
-<p align="left"> 
+<p align="left">
 <img src="https://i.gyazo.com/403fd912ef53eb55d0b8ea21fadf484e.gif">
 </p>
 
@@ -73,6 +73,9 @@ SELECT apply, apply+0 FROM `item_attr` WHERE weapon > 0
 
 <p align="center"><img src="https://user-images.githubusercontent.com/17238102/38222908-7074939e-36f0-11e8-8d09-1027396185f9.gif"><img src="https://i.gyazo.com/5cf81572ee8fb081e9515634a3d65566.gif"></p>
 
+------------
+**20.08.2021**
+- Fixed new equipments had no available slots.
 ------------
 
 # Sockets & attrs
