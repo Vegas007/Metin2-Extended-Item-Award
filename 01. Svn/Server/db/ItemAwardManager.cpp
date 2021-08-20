@@ -2,7 +2,8 @@
 #include "ItemAwardManager.h"
 //1.1) Add after:
 #ifdef ENABLE_EXTEND_ITEM_AWARD
-#include <float.h>
+#include <cfloat>
+#include <algorithm>
 inline double uniform_random(const double a, const double b)
 {
 	return thecore_random() / (RAND_MAX + 1.f) * (b - a) + a;
@@ -39,7 +40,7 @@ inline float gauss_random(const float fAverage, const float sigma)
 //1.2) Search for:
 	snprintf(szQuery, sizeof(szQuery), "SELECT id,login,vnum,count,socket0,socket1,socket2,mall,why FROM item_award WHERE taken_time IS NULL and id > %d", g_dwLastCachedItemAwardID);
 //1.2) Replace with:
-#ifdef ENABLE_EXTEND_ITEM_AWARD	
+#ifdef ENABLE_EXTEND_ITEM_AWARD
 	snprintf(szQuery, sizeof(szQuery), "SELECT id, login, vnum, count, socket0, socket1, socket2, "
 			"attrtype0, attrvalue0, "
 			"attrtype1, attrvalue1, "
@@ -91,7 +92,7 @@ int8_t ItemAwardManager::GetItemAttributeSetIndex(const uint8_t bItemType, const
 				#endif
 			}
 		},
-		
+
 		{ ITEM_ARMOR,
 			{
 				{ARMOR_BODY, ATTRIBUTE_SET_BODY},
@@ -103,7 +104,7 @@ int8_t ItemAwardManager::GetItemAttributeSetIndex(const uint8_t bItemType, const
 				{ARMOR_EAR, ATTRIBUTE_SET_EAR},
 			}
 		},
-		
+
 		{ ITEM_COSTUME,
 			{
 				{COSTUME_BODY, ATTRIBUTE_SET_BODY},
@@ -193,7 +194,7 @@ void ItemAwardManager::CheckItemAttributes(TItemAward & rkItemAward, const TItem
 ||| That's for the items which have addon type (-1) and you added them in item shop without bonuses like skill damage or hit damage,
 ||| value x, y as default, so they'll will be without bonuses and get 'bugged'.
 ||| Now when the item will be inserted there'll be a check if item doesn't have those bonuses (from query) add a random average/skill damage bonus value.
-||| INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 189, 1, 1); 
+||| INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 189, 1, 1);
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 \*******************************************************************/
 void ItemAwardManager::CheckItemAddonType(TItemAward & rkItemAward, const TItemTable & rkItemTable)
@@ -201,7 +202,7 @@ void ItemAwardManager::CheckItemAddonType(TItemAward & rkItemAward, const TItemT
 	const bool bIsAddonTypeItem = (rkItemTable.sAddonType == -1);
 	if (!bIsAddonTypeItem)
 		return;
-	
+
 	bool bHasBonus = false;
 	for (size_t i = 0; i < ITEM_ATTRIBUTE_MAX_NUM; ++i)
 	{
@@ -210,7 +211,7 @@ void ItemAwardManager::CheckItemAddonType(TItemAward & rkItemAward, const TItemT
 
 		if ((bType == APPLY_SKILL_DAMAGE_BONUS || bType == APPLY_NORMAL_HIT_DAMAGE_BONUS) && sValue)
 		{
-			bHasBonus = true; 
+			bHasBonus = true;
 			break;
 		}
 	}
@@ -221,9 +222,9 @@ void ItemAwardManager::CheckItemAddonType(TItemAward & rkItemAward, const TItemT
 		const int16_t sApplyNormalHitValue = std::abs(sApplySkillDamageValue) <= 20 ?
 												(-2 * sApplySkillDamageValue) + std::abs(number(-8, 8) + number(-8, 8)) + number(1, 4) :
 												(-2 * sApplySkillDamageValue) + number(1, 5);
-		
+
 		rkItemAward.aAttr[0].bType = APPLY_NORMAL_HIT_DAMAGE_BONUS;
-		rkItemAward.aAttr[0].sValue = sApplyNormalHitValue;	
+		rkItemAward.aAttr[0].sValue = sApplyNormalHitValue;
 		rkItemAward.aAttr[1].bType = APPLY_SKILL_DAMAGE_BONUS;
 		rkItemAward.aAttr[1].sValue = sApplySkillDamageValue;
 	}
@@ -232,8 +233,8 @@ void ItemAwardManager::CheckItemAddonType(TItemAward & rkItemAward, const TItemT
 /*******************************************************************\
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ||| 12.04.2019 - Added support for books.
-||| Check skill types, unknown skill, skill vnum need to be saved into socket0, 
-||| (4=Aura of the Sword < player.skill_proto), if the skill vnum is unknown, there will be a random book based on pc races, 
+||| Check skill types, unknown skill, skill vnum need to be saved into socket0,
+||| (4=Aura of the Sword < player.skill_proto), if the skill vnum is unknown, there will be a random book based on pc races,
 ||| excluded skills PASSIVE, GUILD, SUPPORT.
 ||| INSERT INTO player.item_award(`login`, `vnum`, `count`, `mall`) VALUES ('account', 50300, 1, 1); # Random book
 ||| INSERT INTO player.item_award(`login`, `vnum`, `count`, `socket0`, `mall`) VALUES ('account', 50300, 1, 4, 1); # Specific book by skill vnum
@@ -270,7 +271,7 @@ void ItemAwardManager::CheckItemSkillBook(TItemAward & rkItemAward, const std::v
 			const bool bIsPCSkill = (JOB_WARRIOR + 1 <= bSkillType && bSkillType <= JOB_SHAMAN + 1) || bSkillType == 7;
 			if (!bIsPCSkill)
 				continue;
-			
+
 			dwSocket0SkillVnum = dwSkillVnum;
 			break;
 		}
@@ -297,6 +298,35 @@ void ItemAwardManager::CheckItemCount(TItemAward & rkItemAward, const TItemTable
 
 /*******************************************************************\
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+||| 20.08.2021 - Fixed not slottable items.
+||| New created equipments had no available slots.
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+\*******************************************************************/
+void ItemAwardManager::CheckItemSocket(TItemAward & rkItemAward, const TItemTable & rkItemTable)
+{
+	// check for limited time items
+	auto hasTimeLimit = false;
+	for (size_t i = 0 ; i < ITEM_LIMIT_MAX_NUM && !hasTimeLimit; i++)
+	{
+		if (LIMIT_REAL_TIME == rkItemTable.aLimits[i].bType || LIMIT_REAL_TIME_START_FIRST_USE == rkItemTable.aLimits[i].bType)
+			hasTimeLimit = true;
+	}
+
+	// check slottable sockets for non limited time items
+	const auto maxSockets = std::min<int>(rkItemTable.bGainSocketPct, ITEM_SOCKET_MAX_NUM);
+	if (maxSockets <= 0 || hasTimeLimit)
+		return;
+
+	if (maxSockets >= 1)
+		rkItemAward.dwSocket0 = 1;
+	if (maxSockets >= 2)
+		rkItemAward.dwSocket1 = 1;
+	if (maxSockets >= 3)
+		rkItemAward.dwSocket2 = 1;
+}
+
+/*******************************************************************\
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ||| TODO-UNFINISHED: Check if apply_type exists in bonuses.
 ||| Check if apply_value, apply_duration is equal with grades (1/2/3/4/5) from settings, blend.txt
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -306,11 +336,11 @@ void ItemAwardManager::CheckItemBlend(TItemAward & rkItemAward, const TItemTable
 	const bool bIsBlendItem = (rkItemTable.bType == ITEM_BLEND);
 	if (!bIsBlendItem)
 		return;
-	
+
 	const uint32_t bApplyType = rkItemAward.dwSocket0;
 	const uint32_t bApplyValue = rkItemAward.dwSocket1;
 	const uint32_t dwApplyDuration = rkItemAward.dwSocket2;
-	
+
 	if (bApplyType == 0 || bApplyValue == 0 || dwApplyDuration == 0)
 		sys_err("ItemAwardManager: Unknown sockets for ITEM_BLEND.");
 }

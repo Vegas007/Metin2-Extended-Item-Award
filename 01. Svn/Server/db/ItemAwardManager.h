@@ -23,6 +23,7 @@ enum
 #ifdef ENABLE_EXTEND_ITEM_AWARD
 		void 				CheckItemAddonType(TItemAward & pkItemAward, const TItemTable & pkItemTable);
 		void				CheckItemCount(TItemAward & pkItemAward, const TItemTable & pkItemTable);
+		void				CheckItemSocket(TItemAward & pkItemAward, const TItemTable & pkItemTable);
 		void				CheckItemBlend(TItemAward & pkItemAward, const TItemTable & pkItemTable);
 		void				CheckItemSkillBook(TItemAward & pkItemAward, const std::vector<TSkillTable> vec_skillTable);
 #endif
